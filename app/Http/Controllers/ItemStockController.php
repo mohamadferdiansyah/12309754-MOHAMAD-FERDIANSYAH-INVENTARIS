@@ -6,6 +6,7 @@ use App\Exports\ItemsExport;
 use App\Models\ItemCategory;
 use App\Models\ItemStock;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ItemStockController extends Controller
@@ -41,14 +42,24 @@ class ItemStockController extends Controller
     public function store(Request $request)
     {
 
+
         $validated = $request->validate(
             [
-                'name' => ['required', 'string', 'max:150'],
+                'name' => [
+                    'required',
+                    'string',
+                    'max:150',
+                    Rule::unique('item_stocks', 'item_name')
+                        ->where(function ($query) use ($request) {
+                            return $query->where('category_id', $request->category_id);
+                        }),
+                ],
                 'category_id' => ['required', 'exists:item_categories,id'],
                 'stock' => ['required', 'integer', 'min:0'],
             ],
             [
                 'name.required' => 'The name field is required.',
+                'name.unique' => 'Item already exists in this category.',
                 'category_id.required' => 'The category field is required.',
                 'category_id.exists' => 'Category not found.',
                 'stock.required' => 'The total field is required.',
@@ -97,13 +108,23 @@ class ItemStockController extends Controller
     {
         $validated = $request->validate(
             [
-                'name' => ['required', 'string', 'max:150'],
+                'name' => [
+                    'required',
+                    'string',
+                    'max:150',
+                    Rule::unique('item_stocks')
+                        ->where(function ($query) use ($request) {
+                            return $query->where('category_id', $request->category_id);
+                        })
+                        ->ignore($item->id),
+                ],
                 'category_id' => ['required', 'exists:item_categories,id'],
                 'stock' => ['required', 'integer', 'min:0'],
                 'new_repair' => ['nullable', 'integer', 'min:0'],
             ],
             [
                 'name.required' => 'The name field is required.',
+                'name.unique' => 'Item already exists in this category.',
                 'category_id.required' => 'The category field is required.',
                 'category_id.exists' => 'Category not found.',
                 'stock.required' => 'The total field is required.',

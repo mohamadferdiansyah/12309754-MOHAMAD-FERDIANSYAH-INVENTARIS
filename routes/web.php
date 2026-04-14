@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowedItemsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemStockController;
+use App\Http\Controllers\ReturnedItemController;
 use App\Http\Controllers\UserController;
 use App\Models\BorrowedItem;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +30,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -68,6 +69,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:staff')->group(function () {
         Route::prefix('lendings')->group(function () {
             Route::get('/create', [BorrowedItemsController::class, 'create'])->name('lendings.create');
+            Route::post('/', [BorrowedItemsController::class, 'store'])->name('lendings.store');
+            Route::delete('/{item}', [BorrowedItemsController::class, 'destroy'])->name('lendings.destroy');
+            Route::get('/export/excel', [BorrowedItemsController::class, 'exportExcel'])->name('lendings.export.excel');
+            Route::post('/{item}/returned', [ReturnedItemController::class, 'returned'])->name('lendings.returned');
+            Route::get('/{item}/receipt', [BorrowedItemsController::class, 'downloadReceipt'])->name('lendings.download-receipt');
         });
     });
 

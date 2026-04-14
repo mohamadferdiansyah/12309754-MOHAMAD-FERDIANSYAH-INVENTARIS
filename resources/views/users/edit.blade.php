@@ -89,10 +89,11 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-3">
-                            <a href="{{ $user->role === 'admin' ? route('users.admin') : route('users.operator') }}"
-                                class="btn fw-bold px-5 py-2 text-white"
-                                style="background-color: #4b5563; border-radius: 8px;">Cancel</a>
-
+                            @if (auth()->user()->role === 'admin')
+                                <a href="{{ $user->role === 'admin' ? route('users.admin') : route('users.operator') }}"
+                                    class="btn fw-bold px-5 py-2 text-white"
+                                    style="background-color: #4b5563; border-radius: 8px;">Cancel</a>
+                            @endif
                             <button type="button" class="btn text-white fw-bold px-5 py-2 shadow-sm"
                                 style="background-color: #2563eb; border-radius: 8px;" data-bs-toggle="modal"
                                 data-bs-target="#confirmUpdateUserModal">

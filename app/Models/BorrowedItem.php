@@ -16,6 +16,8 @@ class BorrowedItem extends Model
         'name_of_borrower',
         'date',
         'notes',
+        'borrower_signature',
+        'staff_signature'
     ];
 
     public function item()
@@ -25,11 +27,11 @@ class BorrowedItem extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'staff_id');
     }
 
     public function returned()
     {
-        return $this->hasMany(ReturnedItem::class);
+        return $this->hasOne(ReturnedItem::class, 'borrowed_item_id');
     }
 }

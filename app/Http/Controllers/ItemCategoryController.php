@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ItemCategory;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ItemCategoryController extends Controller
 {
@@ -33,16 +34,19 @@ class ItemCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(
-            [
-                'name' => ['required', 'string', 'max:100'],
-                'division' => ['required', 'string', 'max:100'],
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('item_categories')->where(function ($query) use ($request) {
+                    return $query->where('division', $request->division);
+                }),
             ],
-            [
-                'name.required' => 'The name field is required.',
-                'division.required' => 'The division pj field is required.',
-            ]
-        );
+            'division' => ['required', 'string', 'max:100'],
+        ], [
+            'name.unique' => 'Category with this name and division already exists.',
+        ]);
 
         ItemCategory::create($validated);
 
@@ -72,16 +76,21 @@ class ItemCategoryController extends Controller
      */
     public function update(Request $request, ItemCategory $category)
     {
-        $validated = $request->validate(
-            [
-                'name' => ['required', 'string', 'max:100'],
-                'division' => ['required', 'string', 'max:100'],
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('item_categories')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('division', $request->division);
+                    })
+                    ->ignore($category->id),
             ],
-            [
-                'name.required' => 'The name field is required.',
-                'division.required' => 'The division pj field is required.',
-            ]
-        );
+            'division' => ['required', 'string', 'max:100'],
+        ], [
+            'name.unique' => 'Category with this name and division already exists.',
+        ]);
 
         $category->update($validated);
 

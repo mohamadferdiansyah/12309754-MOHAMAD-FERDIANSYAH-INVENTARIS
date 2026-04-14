@@ -33,7 +33,8 @@
                         </div>
                         @if (auth()->user()->role === 'admin')
                             <div class="d-flex gap-2">
-                                <a href="{{ route('items.export.excel') }}" class="btn text-white fw-bold px-4 py-2 shadow-sm"
+                                <a href="{{ route('items.export.excel') }}"
+                                    class="btn text-white fw-bold px-4 py-2 shadow-sm"
                                     style="background-color: #7c3aed; border-radius: 8px;">
                                     <i class="bi bi-file-earmark-spreadsheet me-2"></i> Export Excel
                                 </a>
@@ -102,13 +103,10 @@
                                         @endif
 
                                         <td class="text-center">
-                                            {{-- @if (auth()->user()->role === 'admin') --}}
-                                            {{-- <a href="{{ route('lendings', ['item_id' => $item->id]) }}" @else <a --}}
-                                            {{-- href="" @endif --}}
-                                            <a href=""
-                                                class="badge text-decoration-none bg-info text-dark px-3 py-2 border fs-6">
-                                                {{ $item->total_borrowed }}
-                                            </a>
+                                            <a href="{{ route('lendings.index', ['item_id' => $item->id]) }}"
+                                                    class="badge text-decoration-none bg-info text-dark px-3 py-2 border fs-6">
+                                                    {{ $item->total_borrowed }}
+                                                </>
                                         </td>
 
                                         @if (auth()->user()->role === 'admin')

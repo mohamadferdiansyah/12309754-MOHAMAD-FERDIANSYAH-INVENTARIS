@@ -15,7 +15,7 @@
                     style="font-size: 0.7rem; letter-spacing: 1px;">Menu</small>
                 <ul class="nav flex-column mt-2">
                     <li class="nav-item">
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('dashboard.index') }}"
                             class="nav-link text-white {{ request()->is('dashboard*') ? 'bg-primary rounded' : 'opacity-75' }}">
                             <i class="bi bi-grid-fill me-2"></i> Dashboard
                         </a>
@@ -80,7 +80,7 @@
                     style="font-size: 0.7rem; letter-spacing: 1px;">Menu</small>
                 <ul class="nav flex-column mt-2">
                     <li class="nav-item">
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('dashboard.index') }}"
                             class="nav-link text-white {{ request()->is('dashboard*') ? 'bg-primary rounded' : 'opacity-75' }}">
                             <i class="bi bi-grid-fill me-2"></i> Dashboard
                         </a>

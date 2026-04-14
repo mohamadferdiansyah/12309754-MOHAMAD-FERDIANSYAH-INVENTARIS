@@ -14,6 +14,9 @@ class ReturnedItem extends Model
         'borrowed_item_id',
         'return_date',
         'notes',
+        'good_condition',
+        'broken',
+        'missing'
     ];
 
     public function users()

@@ -25,7 +25,6 @@ class ItemsExport implements FromCollection, WithHeadings, WithMapping
             'Name Item',
             'Total Stock',
             'Total Repaired',
-            'Total Borrowed',
             'Last Updated',
         ];
     }
@@ -37,7 +36,6 @@ class ItemsExport implements FromCollection, WithHeadings, WithMapping
             $item->item_name,
             $item->total_stock,
             $item->total_repaired == 0 ? '-' : $item->total_repaired,
-            $item->total_borrowed == 0 ? '-' : $item->total_borrowed,
             $item->updated_at?->format('M d, Y'),
         ];
     }
